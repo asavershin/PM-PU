@@ -1,3 +1,4 @@
+// Утечек памяти нет
 #include <iostream>
 #include <cmath>
 #include <iomanip>
