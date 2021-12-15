@@ -11,7 +11,7 @@ double round(double Number, int N){// функция для округления
     return double((int((Number))%int((Mult*10))))/Mult;
 }
 
-double PI(int N, int *count){ // функция вычисления числа пи
+double PI(int N, int &count){ // функция вычисления числа пи
     double result = 4; //Один из множителей по формуле Лейбница
     double j = 3.0; // знаменатель второго члена в ряде лейбница
     double mult = 1.0; // сумма ряда лейбница до нужного нам члена
@@ -42,31 +42,31 @@ double PI(int N, int *count){ // функция вычисления числа 
         }
         
     }
-    *count = k;
+    count = k;
     return round(first,N);
 }
-double Circle_PI (int *count){
+double Circle_PI (int &count){
     double R = 2; //радиус круга
     double x;
     double y;
     int flag1 = 0; // счетчик попаданий в круг
-    for(int k = 0; k < *count; k++){
+    for(int k = 0; k < count; k++){
         x = double(rand()%20000)/10000; // подибраем рандомную координату x
         y = double(rand()%20000)/10000; // подибраем рандомную координату y
         if(x * x + y * y <= R * R )
             flag1++;
     }
-    return 4.0*double(flag1)/(*count);
+    return 4.0*double(flag1)/(count);
 }
 int main(int argc, const char * argv[]) {
     int N;
-    int *count = new int;
+    int count = 0;
     
     std::cout << "Введите точность вычисления числа PI: " << std::endl;
     std::cin >> N;
     std::cout <<std::fixed<< std::setprecision(N);
     std::cout <<"PI = "<<PI(N, count) << "";
-    std::cout <<std::endl<<"Количество слагаемых в ряду: "<< *count;
+    std::cout <<std::endl<<"Количество слагаемых в ряду: "<< count;
     std::cout << std::endl;
     std::cout <<std::fixed<< std::setprecision(N+4);
     std::cout << "Число ПИ вычисленное с помощью коружности: " << Circle_PI(count) << std::endl;
