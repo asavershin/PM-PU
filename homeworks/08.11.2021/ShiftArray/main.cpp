@@ -1,18 +1,29 @@
 #include <iostream>
-int* ShiftArray(int *arr,int N, int shift){
-    int *M = new int;
-    int shift2;
-    if(shift > N)
-        shift%=N;
-    for (int k = 0; k < N; ++k){
-        if(shift + k < N)
-            shift2 = shift+k;
-        else
-            shift2 = shift+k-N;
-        M[k] = arr[shift2];
+#include <numeric>
+void ShiftArray(int *arr,int N, int shift){
+    int NewPlace = 0;
+    int OldPlace = 0;
+    int tmp = 0;                 //Переменная для временного хранения самого первого замененного элемента
+    int GCD= std::gcd(shift, N); //узнаем, сколько раз будет робигаться счетчик
+    for (int k = 0; k < GCD; ++k) {
+        
+        tmp = arr[k];
+        NewPlace = k;
+        
+        OldPlace = NewPlace + shift;
+        if (OldPlace >= N)
+            OldPlace -= N;
+        while (OldPlace != k) {
+            arr[ NewPlace ] = arr[ OldPlace ];
+            NewPlace = OldPlace;
+//          std::cout << OldPlace << "|";
+            
+            OldPlace = NewPlace + shift;
+            if (OldPlace >= N)
+                OldPlace -= N;
+        }
+        arr[NewPlace] = tmp;
     }
-    delete []arr;
-    return M;
 }
 void print(int *arr, int N){
     for(int k = 0;k < N; ++k)
@@ -22,15 +33,18 @@ void print(int *arr, int N){
 int main(int argc, const char * argv[]) {
     int N = 0;
     int shift = 0;
-    std::cout << "Введите сначала размер массива(она задается сам), а потом размер сдвига влево" << std::endl;
+    std::cout << "Введите сначала размер массива(массив создается автоматически), а потом размер сдвига влево( >=0 )" << std::endl;
     std::cin >> N >> shift;
-    int *Arr = new int;
-    for(int k = 0;k < N; ++k)
-        Arr[k] = rand()%10;
-    print(Arr,N);
-
-    Arr = ShiftArray(Arr, N, shift);
-    print(Arr,N);
+    shift %= N;
+    int *arr = new int[N];
+    for(int k = 0;k < N; ++k){
+        arr[k] = rand()%10;
+    }
+    print(arr,N);
+   
+    ShiftArray(arr, N, shift);
+    print(arr,N);
+    delete[] arr;
     
     return 0;
 }
