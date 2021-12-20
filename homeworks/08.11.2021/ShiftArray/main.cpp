@@ -35,6 +35,9 @@ int main(int argc, const char * argv[]) {
     int shift = 0;
     std::cout << "Введите сначала размер массива(массив создается автоматически), а потом размер сдвига влево( >=0 )" << std::endl;
     std::cin >> N >> shift;
+    if(shift < 0) {
+        shift = N + (shift % N);
+    }
     shift %= N;
     int *arr = new int[N];
     for(int k = 0;k < N; ++k){
